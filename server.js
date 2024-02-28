@@ -5,8 +5,10 @@ const server = fastify();
 
 const database = new DatabaseMemory();
 
-server.get("/videos", () => {
-  const videos = database.list();
+server.get("/videos", (request) => {
+  const search = request.query.search;
+
+  const videos = database.list(search);
 
   return videos;
 });
@@ -19,8 +21,6 @@ server.post("/videos", (request, reply) => {
     description,
     duration,
   });
-
-  console.log(database.list());
 
   return reply.status(201).send();
 });
